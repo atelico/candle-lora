@@ -20,6 +20,7 @@ license = "MIT OR Apache-2.0"
 candle-core = { git = "https://github.com/atelico/candle", rev = "ceab46e2820a6ad1a478c04f65209002c31eae51" }
 candle-nn = { git = "https://github.com/atelico/candle", rev = "ceab46e2820a6ad1a478c04f65209002c31eae51" }
 candle-transformers = { git = "https://github.com/atelico/candle", rev = "ceab46e2820a6ad1a478c04f65209002c31eae51" }
+candle-examples = { git = "https://github.com/atelico/candle", rev = "ceab46e2820a6ad1a478c04f65209002c31eae51" }
 either = "1.9.0"
 serde_json = "1.0.107"
 thiserror = "2.0.12"
