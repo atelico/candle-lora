@@ -541,6 +541,7 @@ impl Llama {
         cache: &Cache,
         cfg: &Config,
         merge: bool,
+        load_lora: bool,
         lora_config: LoraConfig,
         linear_config: LoraLinearConfig,
         embed_config: LoraEmbeddingConfig,
@@ -575,27 +576,29 @@ impl Llama {
             ln_f,
             lm_head: Box::new(lm_head),
         };
-
-        if merge {
-            this.get_merged_lora_model(
-                lora_config,
-                &vb.pp("lora_llama"),
-                Some(linear_config),
-                None,
-                None,
-                Some(embed_config),
-            )
+        if load_lora{
+            if merge {
+                this.get_merged_lora_model(
+                    lora_config,
+                    &vb.pp("lora_llama"),
+                    Some(linear_config),
+                    None,
+                    None,
+                    Some(embed_config),
+                )
+            } else {
+                this.get_lora_model(
+                    lora_config,
+                    &vb.pp("lora_llama"),
+                    Some(linear_config),
+                    None,
+                    None,
+                    Some(embed_config),
+                )
+            }
         } else {
-            this.get_lora_model(
-                lora_config,
-                &vb.pp("lora_llama"),
-                Some(linear_config),
-                None,
-                None,
-                Some(embed_config),
-            )
+           tracing::info!("No LoRA weights found → running base model only");
         }
-
         Ok(this)
     }
 }
