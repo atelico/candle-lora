@@ -597,7 +597,7 @@ impl Llama {
                 )
             }
         } else {
-           tracing::info!("No LoRA weights found → running base model only");
+           tracing::info!("load_lora: false. Running base model only");
         }
         Ok(this)
     }
