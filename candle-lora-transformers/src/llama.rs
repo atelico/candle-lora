@@ -546,7 +546,13 @@ impl Llama {
         embed_config: LoraEmbeddingConfig,
     ) -> Result<Self> {
         let wte = embedding(cfg, vb.pp("model.embed_tokens"))?;
-        let lm_head = linear(cfg.hidden_size, cfg.vocab_size, vb.pp("lm_head"))?;
+        let lm_head = if let Ok(head) = linear(cfg.hidden_size, cfg.vocab_size, vb.pp("lm_head")) {
+            head
+        } else {
+            println!("INFO: Falling back to tied embeddings for lm_head.");
+            linear(cfg.hidden_size, cfg.vocab_size, vb.pp("model.embed_tokens"))?
+        };
+
         let ln_f = RmsNorm::load(cfg.hidden_size, cfg.rms_norm_eps, vb.pp("model.norm"))?;
         let blocks: Vec<_> = (0..cfg.num_hidden_layers)
             .map(|i| {
